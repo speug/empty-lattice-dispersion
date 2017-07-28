@@ -41,40 +41,88 @@
 <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.14.2/math.min.js"></script>
 <script>
 
-var hbar = 4.135667662e-15; //eV*s
-var c = 299792458;
-var pi = math.pi;
-var n = 1.52;
-var a = 50; //px
-var brillouinZone = a/2
 var svg = d3.select("svg"),
           margin = {right: 50, left: 50}
           width = +svg.attr("width") - margin.left - margin.right,
           height = +svg.attr("height");
 
-var circle = svg.selectAll("circle")
-                .data([1,1])
-              .enter().append("circle")
-                .attr("cy",100)
-                .attr("cx", function(d,i) { return i * a + 250;})
-                .attr("r", function(d) { return d; });
+var hbar = 4.135667662e-15; //eV*s
+var c = 299792458;
+var pi = math.pi;
+var n = 1.52;
+var a = 100; //px
+var brillouinZone = a;
+var centerY = height / 2;
+var centerX = width / 4;
+var energyMax = 25;
 
 var zone = svg.selectAll("rect")
+              .data([0])
             .enter().append("rect")
-              .attr("x", width/2 - brillouinZone/2)
-              .attr("y", height/2 - brillouinZone/2)
+              .attr("x", centerX - brillouinZone/2)
+              .attr("y", centerY - brillouinZone/2)
               .attr("height",brillouinZone)
               .attr("width",brillouinZone)
-              .attr("fill","green");
+              .attr("fill","none")
+              .attr("stroke","orange");
+
+var circle1 = svg.selectAll("circle")
+                .data([10,10,10,10,10,10,10,10,10])
+              .enter().append("circle")
+                .attr("fill","none")
+                .attr("stroke","black")
+                .attr("cy",function(d,i) {
+                   if(i < 3){
+                     return (centerY - a);
+                   } else if(i < 6) {
+                     return (centerY);
+                   } else {
+                     return (centerY + a);
+                   }
+                ;})
+                .attr("cx", function(d,i) {
+                  if(i%3 == 0){
+                    return centerX - a
+                  } else if(i%3 == 1) {
+                    return centerX
+                  } else {
+                    return (centerX + a)
+                  }
+                  ;})
+                .attr("r", function(d) { return d; });
+
+d3.select("body").append("svg")
+                .data([3,3,3,3,3,3,3,3,3]).append("circle")
+                .attr("fill","red")
+                .attr("cy",function(d,i) {
+                   if(i < 3){
+                     return (centerY - a);
+                   } else if(i < 6) {
+                     return (centerY);
+                   } else {
+                     return (centerY + a);
+                   }
+                ;})
+                .attr("cx", function(d,i) {
+                  if(i%3 == 0){
+                    return centerX - a
+                  } else if(i%3 == 1) {
+                    return centerX
+                  } else {
+                    return (centerX + a)
+                  }
+                  ;})
+                .attr("r", function(d) { return d; });
+
 
 var E = d3.scaleLinear()
-    .domain([1, 6])
-    .range([0, width/2])
+    .domain([0, energyMax])
+    .range([0, width / 2])
     .clamp(true);
 
 var slider = svg.append("g")
     .attr("class","slider")
-    .attr("transform","translate(" + margin.left + ", " + height / 2 + ")")
+    .attr("transform","translate(" + margin.left + ", " + (height - 50) + ")");
 
 slider.append("line")
     .attr("class", "track")
@@ -105,7 +153,14 @@ var handle = slider.insert("circle", ".track-overlay")
 function k_r(energy) {
   handle.attr("cx", E(energy));
   r1 = (n*energy)/(hbar*c);
-  circle.attr("r", energy*10);
+  circle1.attr("r", energy*10);
 }
+
+function dist(xy1,xy2) {
+  var d = Math.sqrt( Math.pow((xy2[0] - xy1[0]),2) + Math.pow((xy2[1] - xy1[1]),2) );
+  return d;
+}
+
+
 
 </script>
