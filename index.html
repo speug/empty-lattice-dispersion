@@ -66,10 +66,7 @@ var zone = svg.selectAll("rect")
               .attr("fill","none")
               .attr("stroke","orange");
 
-var circles1 = svg.append("g")
-                .attr("class","lightCones");
-
-var circle1 = svg.selectAll("lightCones")
+var circle1 = svg.selectAll("circle")
                 .data([10,10,10,10,10,10,10,10,10])
                   .enter().append("circle")
                   .attr("fill","none")
@@ -94,11 +91,8 @@ var circle1 = svg.selectAll("lightCones")
                   ;})
                   .attr("r", function(d) { return d; });
 
-                  var particlesGroup = svg.append("g")
-                                    .attr("class","particles")
-
-                  var particles = svg.selectAll("particles")
-                                    .data([3,3,3,3,3,3,3,3,3]).append("circle")
+var circle2 = svg.selectAll("circle").data([3,3,3,3,3,3,3,3,3])
+                                    .enter().insert("circle")
                                      .attr("fill","red")
                                      .attr("cy",function(d,i) {
                                        if(i < 3){
@@ -119,6 +113,7 @@ var circle1 = svg.selectAll("lightCones")
                                          }
                                          ;})
                                       .attr("r", function(d) { return d; });
+
 
 var E = d3.scaleLinear()
     .domain([0, energyMax])
