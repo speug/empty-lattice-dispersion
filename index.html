@@ -56,8 +56,14 @@ var centerY = height / 2;
 var centerX = width / 4;
 var energyMax = 25;
 
-var cx = [centerX-a,centerX,centerX+a]
-var cy = [centerY-a,centerY,centerY+a]
+var cx = [centerX-a,centerX,centerX+a];
+var cy = [centerY-a,centerY,centerY+a];
+var xy = [];
+for(var i = 0; i < cx.length; i++) {
+  for(var j = 0; j < cy.length; j++) {
+    xy.push([cx[i],cy[j]]);
+  }
+}
 
 var zone = svg.selectAll("rect")
               .data([0])
@@ -87,6 +93,7 @@ var circle2 = [r2,r2,r2,r2,r2,r2,r2,r2,r2].forEach(function(d,i) {
       .attr("r",d)
       .attr("fill","red");
 });
+
 var E = d3.scaleLinear()
     .domain([0, energyMax])
     .range([0, width / 2])
@@ -128,8 +135,18 @@ function k_r(energy) {
   circle1.attr("r", energy*10);
 }
 
+var kSep = a/50
+var kx = Array.from(new Array(50), (x,i) => i*kSep - 25*kSep) + Array.from(new Array(50), (x,i) => i*0);
+var ky = Array.from(new Array(50), (x,i) => i*0) + Array.from(new Array(50), (x,i) => i*kSep - 25*kSep);
 function dist(xy1,xy2) {
   var d = Math.sqrt( Math.pow((xy2[0] - xy1[0]),2) + Math.pow((xy2[1] - xy1[1]),2) );
   return d;
+}
+
+function dispersion(e) {
+  out = [];
+xy.forEach(function(coords) {
+  
+})
 }
 </script>
