@@ -137,7 +137,7 @@ function k_r(energy) {
 
 var kSep = a/50
 var kx = Array.from(new Array(50), (x,i) => i*kSep - 25*kSep) + Array.from(new Array(50), (x,i) => i*0);
-var ky = Array.from(new Array(50), (x,i) => i*0) + Array.from(new Array(50), (x,i) => i*kSep - 25*kSep);
+var ky = Array.from(new Array(50), (x,i) => i*0) + Array.from(new Array(50), (x,i) => i*kSep + 25*kSep);
 function dist(xy1,xy2) {
   var d = Math.sqrt( Math.pow((xy2[0] - xy1[0]),2) + Math.pow((xy2[1] - xy1[1]),2) );
   return d;
@@ -146,7 +146,7 @@ function dist(xy1,xy2) {
 function dispersion(e) {
   out = [];
 xy.forEach(function(coords) {
-  
+
 })
 }
 </script>
