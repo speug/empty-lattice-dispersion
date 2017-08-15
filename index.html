@@ -129,6 +129,13 @@ var handle = slider.insert("circle", ".track-overlay")
     .attr("class", "handle")
     .attr("r", 9);
 
+slider.transition() //gratuituos, copied intro
+      .duration(1000)
+      .tween("E", function(){
+        var i = d3.interpolate(0,10)
+        return function(t) { k_r(i(t)); };
+      });
+
 function k_r(energy) {
   handle.attr("cx", E(energy));
   r1 = (n*energy)/(hbar*c);
@@ -143,10 +150,38 @@ function dist(xy1,xy2) {
   return d;
 }
 
-function dispersion(e) {
-  out = [];
-xy.forEach(function(coords) {
-
-})
+function eV(k) {
+  var E_eV = (k*c*hbar)/n;
+  return E_eV;
 }
+
+var x = d3.scaleLinear()
+  .rangeRound([width / 2, width]);
+var y = d3.scaleLinear()
+  .rangeRound([height,0]);
+
+var lineGen = d3.line()
+  .x(function(k) { return x(k); })
+  .y(function(k) { return y(eV(k)); })
+
+
+
+xy.forEach( function(coords) {
+  svg.append("paths")
+  .attr("d",lineGen( k_range(coords) ) )
+  .attr('stroke', function(d, j) {
+    return "hsl(" + Math.random() * 360 + ",100%,50%)";
+  })
+  .attr("stroke-width",2)
+  .attr("fill", "none");
+});
+
+function k_range(xy) {
+   out = [];
+   for(var i = 0; i < kx.length; i++){
+     out.push( dist(xy,[kx[i],ky[i]]) );
+   };
+   return out;
+  }
+
 </script>
